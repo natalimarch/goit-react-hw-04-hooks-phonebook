@@ -5,29 +5,29 @@ import styles from "./Form.module.css";
 import FormData from "../Phonebook/formData";
 
 const Form = ({ onSubmit }) => {
-  const [state, setState] = useState({ name: "", number: "" });
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
   const nameInputIdRef = useRef(generate());
   const numberInputIdRef = useRef(generate());
 
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
-    setState({
-      [name]: value,
-    });
+  const changeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const changeNumber = (e) => {
+    setNumber(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit();
+    onSubmit({ name, number });
     reset();
   };
 
   const reset = () => {
-    setState({
-      name: "",
-      number: "",
-    });
+    setName("");
+    setNumber("");
   };
 
   return (
@@ -40,8 +40,8 @@ const Form = ({ onSubmit }) => {
               {...FormData.name}
               className={styles.Input}
               required
-              value={state.name}
-              onChange={handleChange}
+              value={name}
+              onChange={changeName}
               id={nameInputIdRef.current}
             />
           </label>
@@ -53,8 +53,8 @@ const Form = ({ onSubmit }) => {
               {...FormData.number}
               className={styles.Input}
               required
-              value={state.number}
-              onChange={handleChange}
+              value={number}
+              onChange={changeNumber}
               id={numberInputIdRef.current}
             />
           </label>

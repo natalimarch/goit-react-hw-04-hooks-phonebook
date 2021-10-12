@@ -4,19 +4,17 @@ import { generate } from "shortid";
 import ContactsList from "../ContactsList/ContactsList";
 import FormMain from "../Form/Form";
 import Filter from "../Filter/Filter";
-import { initialState } from "./initialState";
+import { contactsList } from "./initialState";
 
 const Phonebook = () => {
-  const [contacts, setContacts] = useState(initialState.contacts);
+  const [contacts, setContacts] = useState(contactsList);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
     const contacts = JSON.parse(localStorage.getItem("contacts"));
 
     if (contacts?.length) {
-      setContacts({
-        contacts,
-      });
+      setContacts(contacts);
     }
   }, []);
 
@@ -25,6 +23,7 @@ const Phonebook = () => {
   }, [contacts]);
 
   const addContact = ({ name, number }) => {
+    console.log(contacts, 11111111);
     const isAvailableName = contacts.find((contact) => contact.name === name);
     const isAvailableNumber = contacts.find(
       (contact) => contact.number === number
@@ -39,18 +38,9 @@ const Phonebook = () => {
     }
 
     setContacts((prevState) => {
-      const newContacts = [...prevState.contacts];
-      newContacts.push({ name, number, id: generate() });
-      return { contacts: newContacts };
+      return [...prevState, { name, number, id: generate() }];
     });
   };
-
-  // const handleChange = ({ target }) => {
-  //   const { name, value } = target;
-  //   setContacts({
-  //     [name]: value,
-  //   });
-  // };
 
   const changeFilter = ({ target }) => {
     const { name, value } = target;
@@ -61,15 +51,16 @@ const Phonebook = () => {
 
   const filterInput = () => {
     const FilterLowerCase = filter.toLowerCase();
+
+    console.log(contacts, 222222222);
     return contacts.filter((item) =>
       item?.name?.toLowerCase().includes(FilterLowerCase)
     );
   };
 
   const onDelete = (idx) => {
-    setContacts(({ contacts }) => {
-      const deleteContact = contacts.filter((contact) => contact.id !== idx);
-      return { contacts: deleteContact };
+    setContacts((prevState) => {
+      return prevState.filter((contact) => contact.id !== idx);
     });
   };
 
