@@ -43,16 +43,13 @@ const Phonebook = () => {
   };
 
   const changeFilter = ({ target }) => {
-    const { name, value } = target;
-    setFilter({
-      [name]: value,
-    });
+    const { value } = target;
+    setFilter(value);
   };
 
   const filterInput = () => {
     const FilterLowerCase = filter.toLowerCase();
-
-    console.log(contacts, 222222222);
+    console.log(filter);
     return contacts.filter((item) =>
       item?.name?.toLowerCase().includes(FilterLowerCase)
     );
